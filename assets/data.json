@@ -1,0 +1,122 @@
+{
+  "subjects": [
+    {
+      "id": "english",
+      "name_en": "English",
+      "name_pa": "ਅੰਗਰੇਜ਼ੀ",
+      "icon": "📘",
+      "lessons": [
+        {
+          "id": "eng_l1",
+          "title_en": "Introduction to English",
+          "title_pa": "ਅੰਗਰੇਜ਼ੀ ਦਾ ਪਰਿਚਯ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        },
+        {
+          "id": "eng_l2",
+          "title_en": "Grammar Basics",
+          "title_pa": "ਵਿਆਕਰਨ ਦੀਆਂ ਬੁਨਿਆਦਾਂ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    },
+    {
+      "id": "punjabi",
+      "name_en": "Punjabi",
+      "name_pa": "ਪੰਜਾਬੀ",
+      "icon": "📙",
+      "lessons": [
+        {
+          "id": "pun_l1",
+          "title_en": "Introduction to Punjabi",
+          "title_pa": "ਪੰਜਾਬੀ ਦਾ ਪਰਿਚਯ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    },
+    {
+      "id": "physics",
+      "name_en": "Physics",
+      "name_pa": "ਭੌਤਿਕ ਵਿਗਿਆਨ",
+      "icon": "🧲",
+      "lessons": [
+        {
+          "id": "phy_l1",
+          "title_en": "Basics of Force",
+          "title_pa": "ਬਲ ਦੇ ਮੁੱਢਲੇ ਸਿਧਾਂਤ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    },
+    {
+      "id": "chemistry",
+      "name_en": "Chemistry",
+      "name_pa": "ਰਸਾਇਣ ਵਿਗਿਆਨ",
+      "icon": "🧪",
+      "lessons": [
+        {
+          "id": "chem_l1",
+          "title_en": "Introduction to Atoms",
+          "title_pa": "ਪਰਮਾਣੂਆਂ ਦਾ ਪਰਿਚਯ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    },
+    {
+      "id": "maths",
+      "name_en": "Maths",
+      "name_pa": "ਗਣਿਤ",
+      "icon": "➗",
+      "lessons": [
+        {
+          "id": "math_l1",
+          "title_en": "Basics of Addition",
+          "title_pa": "ਜੋੜ ਦੇ ਮੁੱਢਲੇ ਸਿਧਾਂਤ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    },
+    {
+      "id": "history",
+      "name_en": "History",
+      "name_pa": "ਇਤਿਹਾਸ",
+      "icon": "📜",
+      "lessons": [
+        {
+          "id": "his_l1",
+          "title_en": "Introduction to Ancient Civilizations",
+          "title_pa": "ਪ੍ਰਾਚੀਨ ਸਭਿਆਚਾਰਾਂ ਦਾ ਪਰਿਚਯ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    },
+    {
+      "id": "geography",
+      "name_en": "Geography",
+      "name_pa": "ਭੂਗੋਲ",
+      "icon": "🌍",
+      "lessons": [
+        {
+          "id": "geo_l1",
+          "title_en": "Introduction to Continents",
+          "title_pa": "ਮਹਾਂਦੀਪਾਂ ਦਾ ਪਰਿਚਯ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "name_en": "Social Studies",
+      "name_pa": "ਸਮਾਜਿਕ ਅਧਿਐਨ",
+      "icon": "👥",
+      "lessons": [
+        {
+          "id": "soc_l1",
+          "title_en": "Understanding Society",
+          "title_pa": "ਸਮਾਜ ਦੀ ਸਮਝ",
+          "video_url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        }
+      ]
+    }
+  ]
+}
