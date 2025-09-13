@@ -6,40 +6,49 @@ import '../app_state.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Color _colorForSubject(Map subj) {
-    // If JSON provides a color as hex string (optional), parse it here.
-    final c = subj['color'];
-    if (c is String && c.startsWith('#')) {
-      try {
-        // convert "#RRGGBB" or "#AARRGGBB" to Color
-        final hex = c.replaceFirst('#', '');
-        final intVal = int.parse(hex, radix: 16);
-        return hex.length == 6 ? Color(0xFF000000 | intVal) : Color(intVal);
-      } catch (e) {
-        // fall through to default mapping
-      }
-    }
-
-    // default mapping by id
-    switch (subj['id']) {
+  IconData _iconForSubject(String id) {
+    switch (id) {
       case 'english':
-        return Colors.lightBlueAccent;
+        return Icons.menu_book;
       case 'punjabi':
-        return Colors.orangeAccent;
+        return Icons.translate;
       case 'physics':
-        return Colors.greenAccent;
+        return Icons.science;
       case 'chemistry':
-        return Colors.tealAccent;
+        return Icons.biotech;
       case 'maths':
-        return Colors.purpleAccent;
+        return Icons.calculate;
       case 'history':
-        return Colors.brown.shade300;
+        return Icons.history_edu;
       case 'geography':
-        return Colors.lightGreenAccent;
+        return Icons.public;
       case 'social':
-        return Colors.pinkAccent;
+        return Icons.group;
       default:
-        return Colors.blueGrey.shade200;
+        return Icons.book;
+    }
+  }
+
+  Color _colorForSubject(String id) {
+    switch (id) {
+      case 'english':
+        return Colors.lightBlue.shade100;
+      case 'punjabi':
+        return Colors.orange.shade100;
+      case 'physics':
+        return Colors.green.shade100;
+      case 'chemistry':
+        return Colors.teal.shade100;
+      case 'maths':
+        return Colors.purple.shade100;
+      case 'history':
+        return Colors.brown.shade100;
+      case 'geography':
+        return Colors.lightGreen.shade100;
+      case 'social':
+        return Colors.pink.shade100;
+      default:
+        return Colors.blueGrey.shade100;
     }
   }
 
@@ -48,73 +57,34 @@ class HomeScreen extends StatelessWidget {
     final appState = Provider.of<AppState>(context);
     final language = appState.language;
 
-    // get subjects from AppState (loaded from assets/data.json)
     final subjectsFromJson = appState.getSubjects();
-
-    // Debug: confirm how many subjects loaded
-    // Check debug console to make sure data.json was read.
-    // (Remove/disable in production)
-    // ignore: avoid_print
-    print('DEBUG: loaded subjects count = ${subjectsFromJson.length}');
-
-    // fallback if JSON is empty (keeps UI alive while assets are fixed)
     final fallbackSubjects = [
-      {
-        'id': 'english',
-        'name_en': 'English',
-        'name_pa': 'ਅੰਗਰੇਜ਼ੀ',
-        'icon': '📘',
-      },
-      {
-        'id': 'punjabi',
-        'name_en': 'Punjabi',
-        'name_pa': 'ਪੰਜਾਬੀ',
-        'icon': '📙',
-      },
-      {
-        'id': 'physics',
-        'name_en': 'Physics',
-        'name_pa': 'ਭੌਤਿਕ ਵਿਗਿਆਨ',
-        'icon': '🧲',
-      },
-      {
-        'id': 'chemistry',
-        'name_en': 'Chemistry',
-        'name_pa': 'ਰਸਾਇਣ ਵਿਗਿਆਨ',
-        'icon': '🧪',
-      },
-      {
-        'id': 'maths',
-        'name_en': 'Maths',
-        'name_pa': 'ਗਣਿਤ',
-        'icon': '➗',
-      },
-      {
-        'id': 'history',
-        'name_en': 'History',
-        'name_pa': 'ਇਤਿਹਾਸ',
-        'icon': '📜',
-      },
-      {
-        'id': 'geography',
-        'name_en': 'Geography',
-        'name_pa': 'ਭੂਗੋਲ',
-        'icon': '🌍',
-      },
-      {
-        'id': 'social',
-        'name_en': 'Social Studies',
-        'name_pa': 'ਸਮਾਜਿਕ ਅਧਿਐਨ',
-        'icon': '👥',
-      },
+      {'id': 'english', 'name_en': 'English', 'name_pa': 'ਅੰਗਰੇਜ਼ੀ'},
+      {'id': 'punjabi', 'name_en': 'Punjabi', 'name_pa': 'ਪੰਜਾਬੀ'},
+      {'id': 'physics', 'name_en': 'Physics', 'name_pa': 'ਭੌਤਿਕ ਵਿਗਿਆਨ'},
+      {'id': 'chemistry', 'name_en': 'Chemistry', 'name_pa': 'ਰਸਾਇਣ ਵਿਗਿਆਨ'},
+      {'id': 'maths', 'name_en': 'Maths', 'name_pa': 'ਗਣਿਤ'},
+      {'id': 'history', 'name_en': 'History', 'name_pa': 'ਇਤਿਹਾਸ'},
+      {'id': 'geography', 'name_en': 'Geography', 'name_pa': 'ਭੂਗੋਲ'},
+      {'id': 'social', 'name_en': 'Social Studies', 'name_pa': 'ਸਮਾਜਿਕ ਅਧਿਐਨ'},
     ];
 
     final subjects = subjectsFromJson.isNotEmpty ? subjectsFromJson : fallbackSubjects;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rural Learning'),
         backgroundColor: Colors.teal,
+        elevation: 4,
+        centerTitle: true,
+        title: const Text(
+          "Navi SocH",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
+            color: Colors.white,
+          ),
+        ),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 8.0),
@@ -124,9 +94,9 @@ class HomeScreen extends StatelessWidget {
       ),
       drawer: _buildDrawer(context),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.teal, Colors.lightBlueAccent],
+            colors: [Colors.grey.shade50, Colors.lightBlue.shade50],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -146,18 +116,17 @@ class HomeScreen extends StatelessWidget {
               final title = language == 'pa'
                   ? (subject['name_pa'] as String? ?? subject['name_en'] as String)
                   : (subject['name_en'] as String? ?? subject['name_pa'] as String);
-              final color = _colorForSubject(subject);
+
+              final id = subject['id'] as String;
+              final color = _colorForSubject(id);
+              final icon = _iconForSubject(id);
 
               return GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
                     context,
                     '/lessons',
-                    arguments: {
-                      'subjectId': subject['id'],
-                      'name': title,
-                      'icon': subject['icon'] ?? '📘',
-                    },
+                    arguments: {'subjectId': id, 'name': title},
                   );
                 },
                 child: Card(
@@ -165,22 +134,19 @@ class HomeScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  elevation: 6,
+                  elevation: 4,
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          (subject['icon'] ?? '📘') as String,
-                          style: const TextStyle(fontSize: 42),
-                        ),
+                        Icon(icon, size: 38, color: Colors.teal.shade700),
                         const SizedBox(height: 10),
                         Text(
                           title,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
                             color: Colors.black87,
                           ),
                         ),
@@ -193,11 +159,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Colors.orangeAccent,
-        tooltip: 'Chatbot (FAQ)',
+        icon: const Icon(Icons.chat_bubble_outline),
+        label: const Text("Ask Navi"),
         onPressed: () => Navigator.pushNamed(context, '/chatbot'),
-        child: const Icon(Icons.chat_bubble_outline),
       ),
     );
   }
@@ -214,24 +180,24 @@ class HomeScreen extends StatelessWidget {
                 end: Alignment.bottomRight,
               ),
             ),
-            accountName: Text("Rural Learning"),
-            accountEmail: Text("Welcome!"),
+            accountName: Text("Navi SocH"),
+            accountEmail: Text("Welcome Student!"),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.white,
               child: Icon(Icons.school, size: 40, color: Colors.teal),
             ),
           ),
-          _drawerItem(context, "🏠 Home", '/home'),
-          _drawerItem(context, "👩‍🎓 Profile", '/profile'),
-          _drawerItem(context, "📝 Quizzes", '/quizzes'),
-          _drawerItem(context, "🎓 Exams", '/exams'),
-          _drawerItem(context, "📈 Progress", '/progress'),
-          _drawerItem(context, "❓ FAQs", '/faqs'),
-          _drawerItem(context, "🤝 Support", '/support'),
+          _drawerItem(context, Icons.home, "Home", '/home'),
+          _drawerItem(context, Icons.person, "Profile", '/profile'),
+          _drawerItem(context, Icons.quiz, "Quizzes", '/quizzes'),
+          _drawerItem(context, Icons.book, "Exams", '/exams'),
+          _drawerItem(context, Icons.show_chart, "Progress", '/progress'),
+          _drawerItem(context, Icons.help_outline, "FAQs", '/faqs'),
+          _drawerItem(context, Icons.support_agent, "Support", '/support'),
           const Spacer(),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text("🚪 Sign Out"),
+            title: const Text("Sign Out"),
             onTap: () async {
               final appState = Provider.of<AppState>(context, listen: false);
               await appState.signOut();
@@ -245,8 +211,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _drawerItem(BuildContext context, String title, String route) {
+  Widget _drawerItem(BuildContext context, IconData icon, String title, String route) {
     return ListTile(
+      leading: Icon(icon, color: Colors.teal),
       title: Text(
         title,
         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -272,9 +239,7 @@ class LanguageToggle extends StatelessWidget {
             child: Text(
               'EN',
               style: TextStyle(
-                color: appState.language == 'en'
-                    ? Colors.white
-                    : Colors.white70,
+                color: appState.language == 'en' ? Colors.white : Colors.white70,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -287,9 +252,7 @@ class LanguageToggle extends StatelessWidget {
             child: Text(
               'ਪੰਜਾਬੀ',
               style: TextStyle(
-                color: appState.language == 'pa'
-                    ? Colors.white
-                    : Colors.white70,
+                color: appState.language == 'pa' ? Colors.white : Colors.white70,
                 fontWeight: FontWeight.bold,
               ),
             ),

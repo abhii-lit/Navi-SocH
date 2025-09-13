@@ -12,9 +12,13 @@ class AppState extends ChangeNotifier {
   // ✅ track the user-selected class
   String? selectedClass;
 
-  // ✅ NEW: track login state
+  // ✅ track login state
   bool _loggedIn = false;
   bool get isLoggedIn => _loggedIn;
+
+  // ✅ track user role (student/teacher)
+  String _userRole = 'student'; // default
+  String get userRole => _userRole;
 
   Map<String, dynamic> get data => _data;
 
@@ -39,8 +43,9 @@ class AppState extends ChangeNotifier {
     // Restore saved class if available
     selectedClass = prefs?.getString('selectedClass');
 
-    // ✅ Restore login state
+    // ✅ Restore login state & role
     _loggedIn = prefs?.getBool('loggedIn') ?? false;
+    _userRole = prefs?.getString('userRole') ?? 'student';
 
     notifyListeners();
   }
@@ -111,10 +116,12 @@ class AppState extends ChangeNotifier {
     };
   }
 
-  // ✅ Login
-  Future<void> login() async {
+  // ✅ Login with role
+  Future<void> login({String role = 'student'}) async {
     _loggedIn = true;
+    _userRole = role;
     await prefs?.setBool('loggedIn', true);
+    await prefs?.setString('userRole', role);
     notifyListeners();
   }
 
@@ -129,8 +136,8 @@ class AppState extends ChangeNotifier {
     progress = {};
     selectedClass = null;
     _loggedIn = false;
+    _userRole = 'student';
 
     notifyListeners();
   }
 }
-

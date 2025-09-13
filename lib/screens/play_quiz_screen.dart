@@ -28,6 +28,8 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
 
     _answers.add({
       "question": currentQ["question"],
+      "userAnswer": selected,
+      "correctAnswer": currentQ["answer"],
       "isCorrect": isCorrect,
     });
 
@@ -48,6 +50,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
         ),
       ).then((result) {
         if (result == "playAgain") {
+          // 🔁 Restart quiz
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -58,7 +61,11 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
             ),
           );
         } else if (result == "leaderboard") {
-          Navigator.pop(context); // back to leaderboard
+          // 🏆 Go to leaderboard
+          Navigator.pushReplacementNamed(context, "/leaderboard");
+        } else if (result == "home") {
+          // 🏠 Go back to home
+          Navigator.pushReplacementNamed(context, "/home");
         }
       });
     }
@@ -86,6 +93,10 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
             const SizedBox(height: 20),
             ...currentQ["options"].map<Widget>((opt) {
               return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 3,
                 child: ListTile(
                   title: Text(opt),
                   onTap: () => _answerQuestion(opt),

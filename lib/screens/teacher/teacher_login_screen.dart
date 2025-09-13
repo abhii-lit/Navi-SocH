@@ -1,25 +1,21 @@
-// lib/screens/credential_login_screen.dart
+// lib/screens/teacher/teacher_login_screen.dart
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../app_state.dart';
 
-class CredentialLoginScreen extends StatefulWidget {
-  const CredentialLoginScreen({super.key});
+class TeacherLoginScreen extends StatefulWidget {
+  const TeacherLoginScreen({super.key});
 
   @override
-  State<CredentialLoginScreen> createState() => _CredentialLoginScreenState();
+  State<TeacherLoginScreen> createState() => _TeacherLoginScreenState();
 }
 
-class _CredentialLoginScreenState extends State<CredentialLoginScreen> {
+class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
@@ -51,7 +47,7 @@ class _CredentialLoginScreenState extends State<CredentialLoginScreen> {
               ),
             );
           },
-          onEnd: () => setState(() {}), // keep glowing loop
+          onEnd: () => setState(() {}),
         ),
       ),
       body: Container(
@@ -78,17 +74,17 @@ class _CredentialLoginScreenState extends State<CredentialLoginScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 10),
                       // 🔹 Space for logo/custom image
+                      const SizedBox(height: 10),
                       const CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage("assets/kid_avatar.png"),
+                        backgroundImage: AssetImage("assets/teacher_avatar.png"),
                         backgroundColor: Colors.transparent,
                       ),
                       const SizedBox(height: 12),
 
                       const Text(
-                        "Student Login",
+                        "Teacher Login",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -117,7 +113,7 @@ class _CredentialLoginScreenState extends State<CredentialLoginScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      // Password field
+                      // Password field with toggle
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
@@ -151,17 +147,15 @@ class _CredentialLoginScreenState extends State<CredentialLoginScreen> {
 
                       // Login button
                       ElevatedButton(
-                        onPressed: () async {
+                        onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
                             final email = _emailController.text.trim();
                             final password = _passwordController.text.trim();
 
-                            if (email == "student@gmail.com" &&
+                            if (email == "teacher@gmail.com" &&
                                 password == "password123") {
-                              await appState.login(role: "student");
-                              if (mounted) {
-                                Navigator.pushReplacementNamed(context, "/home");
-                              }
+                              Navigator.pushReplacementNamed(
+                                  context, "/teacherDashboard");
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

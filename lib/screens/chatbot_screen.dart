@@ -1,6 +1,5 @@
+// lib/screens/chatbot_screen.dart
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../app_state.dart';
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
@@ -10,47 +9,99 @@ class ChatbotScreen extends StatefulWidget {
 }
 
 class _ChatbotScreenState extends State<ChatbotScreen> {
-  final TextEditingController _ctrl = TextEditingController();
-  String _answer = '';
+  final List<Map<String, String>> _messages = [
+    {"sender": "bot", "text": "Hello 👋, I’m your study assistant. How can I help you today?"}
+  ];
+  final TextEditingController _controller = TextEditingController();
+
+  void _sendMessage() {
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+
+    setState(() {
+      _messages.add({"sender": "user", "text": text});
+      _messages.add({"sender": "bot", "text": "Got it! You said: \"$text\""});
+    });
+
+    _controller.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
     return Scaffold(
-      appBar: AppBar(title: Text(appState.language == 'pa' ? 'ਚੈਟਬੋਟ' : 'Chatbot')),
-      body: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Expanded(
-              child: _answer.isEmpty
-                  ? Center(child: Text(appState.language == 'pa' ? 'ਆਪਣੇ ਸਵਾਲ ਪੁੱਛੋ' : 'Ask your question'))
-                  : Card(
-                      child: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Text(_answer, style: TextStyle(fontSize: 18)),
+      appBar: AppBar(
+        title: const Text(
+          "Chat Assistant",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.teal,
+      ),
+      body: Column(
+        children: [
+          // Chat messages
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final msg = _messages[index];
+                final isUser = msg["sender"] == "user";
+
+                return Align(
+                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                    decoration: BoxDecoration(
+                      color: isUser ? Colors.teal.shade400 : Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      msg["text"] ?? "",
+                      style: TextStyle(
+                        color: isUser ? Colors.white : Colors.black87,
+                        fontSize: 15,
                       ),
                     ),
+                  ),
+                );
+              },
             ),
-            Row(
+          ),
+
+          // Input bar
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            color: Colors.white,
+            child: Row(
               children: [
-                Expanded(child: TextField(controller: _ctrl, decoration: InputDecoration(hintText: appState.language == 'pa' ? 'ਸਵਾਲ ਲਿਖੋ' : 'Type question'))),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    final q = _ctrl.text.trim();
-                    if (q.isEmpty) return;
-                    final ans = appState.findFaqAnswer(q);
-                    setState(() {
-                      _answer = appState.language == 'pa' ? ans['pa'] ?? '' : ans['en'] ?? '';
-                    });
-                    _ctrl.clear();
-                  },
-                )
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      hintText: "Type your message...",
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                CircleAvatar(
+                  backgroundColor: Colors.teal,
+                  child: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.white),
+                    onPressed: _sendMessage,
+                  ),
+                ),
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
