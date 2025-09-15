@@ -1,5 +1,5 @@
-// lib/screens/chatbot_screen.dart
 import 'package:flutter/material.dart';
+import '../services/ai_service.dart';
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
@@ -9,94 +9,98 @@ class ChatbotScreen extends StatefulWidget {
 }
 
 class _ChatbotScreenState extends State<ChatbotScreen> {
-  final List<Map<String, String>> _messages = [
-    {"sender": "bot", "text": "Hello 👋, I’m your study assistant. How can I help you today?"}
-  ];
+  late AIService _aiService;
   final TextEditingController _controller = TextEditingController();
+  final List<Map<String, String>> _messages = [];
 
-  void _sendMessage() {
-    final text = _controller.text.trim();
-    if (text.isEmpty) return;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initAIService();
+  }
+
+  Future<void> _initAIService() async {
+    _aiService = await AIService.create();
+  }
+
+  Future<void> _sendMessage() async {
+    final userMessage = _controller.text.trim();
+    if (userMessage.isEmpty) return;
 
     setState(() {
-      _messages.add({"sender": "user", "text": text});
-      _messages.add({"sender": "bot", "text": "Got it! You said: \"$text\""});
+      _messages.add({"role": "user", "text": userMessage});
+      _controller.clear();
+      _isLoading = true;
     });
 
-    _controller.clear();
+    final response = await _aiService.getResponse(userMessage);
+
+    setState(() {
+      _messages.add({"role": response["source"]!, "text": response["text"]!});
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Chat Assistant",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text("AI Chatbot"),
         backgroundColor: Colors.teal,
       ),
       body: Column(
         children: [
-          // Chat messages
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final msg = _messages[index];
-                final isUser = msg["sender"] == "user";
+                final isUser = msg["role"] == "user";
 
                 return Align(
-                  alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                  alignment:
+                      isUser ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
-                      color: isUser ? Colors.teal.shade400 : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(16),
+                      color: isUser ? Colors.teal[100] : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       msg["text"] ?? "",
-                      style: TextStyle(
-                        color: isUser ? Colors.white : Colors.black87,
-                        fontSize: 15,
-                      ),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                 );
               },
             ),
           ),
-
-          // Input bar
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            color: Colors.white,
+          if (_isLoading)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: "Type your message...",
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide.none,
-                      ),
+                    decoration: const InputDecoration(
+                      hintText: "Ask me anything...",
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
-                CircleAvatar(
-                  backgroundColor: Colors.teal,
-                  child: IconButton(
-                    icon: const Icon(Icons.send, color: Colors.white),
-                    onPressed: _sendMessage,
-                  ),
+                IconButton(
+                  icon: const Icon(Icons.send, color: Colors.teal),
+                  onPressed: _sendMessage,
                 ),
               ],
             ),

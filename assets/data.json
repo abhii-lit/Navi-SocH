@@ -118,5 +118,28 @@
         }
       ]
     }
+  ],
+  "faq": [
+    {
+      "q_en": "What is photosynthesis?",
+      "a_en": "Photosynthesis is the process by which plants make food using sunlight.",
+      "q_pa": "ਫੋਟੋਸਿੰਥੇਸਿਸ ਕੀ ਹੈ?",
+      "a_pa": "ਪੌਦੇ ਸੂਰਜ ਦੀ ਰੋਸ਼ਨੀ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਆਪਣਾ ਖਾਣਾ ਬਣਾਉਂਦੇ ਹਨ।"
+    },
+    {
+      "q_en": "Who discovered gravity?",
+      "a_en": "Sir Isaac Newton discovered gravity after observing a falling apple.",
+      "q_pa": "ਗੁਰੁਤਵਾਕਰਸ਼ਣ ਦੀ ਖੋਜ ਕਿਸ ਨੇ ਕੀਤੀ?",
+      "a_pa": "ਸਰ ਆਇਜ਼ਕ ਨਿਊਟਨ ਨੇ ਇੱਕ ਸੇਬ ਦੇ ਡਿੱਗਣ ਤੋਂ ਬਾਅਦ ਗੁਰੁਤਵਾਕਰਸ਼ਣ ਦੀ ਖੋਜ ਕੀਤੀ।"
+    },
+    {
+      "q_en": "What is the capital of India?",
+      "a_en": "The capital of India is New Delhi.",
+      "q_pa": "ਭਾਰਤ ਦੀ ਰਾਜਧਾਨੀ ਕੀ ਹੈ?",
+      "a_pa": "ਭਾਰਤ ਦੀ ਰਾਜਧਾਨੀ ਨਵੀਂ ਦਿੱਲੀ ਹੈ।"
+    }
   ]
 }
+
+
+ 

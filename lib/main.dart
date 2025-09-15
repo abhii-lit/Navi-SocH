@@ -1,5 +1,7 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'app_state.dart';
 
 // Screens
@@ -30,8 +32,19 @@ import 'screens/teacher/teacher_login_screen.dart';
 // Role Selection
 import 'screens/role_selection_screen.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // ✅ Try loading env from assets (works on web) or fallback to project root (mobile)
+  try {
+    await dotenv.load(fileName: "assets/.env"); 
+  } catch (e) {
+    try {
+      await dotenv.load(fileName: ".env");
+    } catch (_) {
+      debugPrint("⚠️ No .env file found. Make sure API keys are set!");
+    }
+  }
 
   final appState = AppState();
   await appState.init();
@@ -86,7 +99,7 @@ class MyApp extends StatelessWidget {
 
             // Progress & chatbot
             '/progress': (_) => const ProgressScreen(),
-            '/chatbot': (_) => ChatbotScreen(), // ✅ FIXED (no const)
+            '/chatbot': (_) => ChatbotScreen(),
 
             // Profile
             '/profile': (_) => const ProfileScreen(),
@@ -118,7 +131,6 @@ class MyApp extends StatelessWidget {
             '/leaderboard': (_) => const LeaderboardScreen(),
           },
 
-          // For routes needing arguments
           onGenerateRoute: (settings) {
             if (settings.name == '/quizOptions') {
               final subject = settings.arguments as String? ?? 'Unknown Subject';
